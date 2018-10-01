@@ -24,6 +24,9 @@ const store = {
 
     this.locked = false;
     this.symbolIndex = 0;
+    this.rows = this.getRows();
+    this.columns = this.getColumns();
+    this.diagonals = this.getDiagonals();
 
     return this;
   },
@@ -85,7 +88,7 @@ const store = {
 
 const game = {
   getGameWinner() {
-    const lines = [...store.getRows(), ...store.getColumns(), ...store.getDiagonals()]
+    const lines = [...store.rows, ...store.columns, ...store.diagonals];
     return this.getWinner(lines);
   },
 
@@ -104,8 +107,7 @@ const game = {
 const render = (function() {
   function render() {
     $('.board').html(
-      store
-        .getRows()
+      store.rows
         .map(renderRow)
         .join('')
     );
@@ -132,7 +134,7 @@ const render = (function() {
 })();
 
 // Event Listeners
-const ui = (function() {
+const controller = (function() {
   function bindEventListeners() {
     $('.board').on('click', '.cell', onCellClick);
 
@@ -170,5 +172,5 @@ const ui = (function() {
 $(() => {
   store.init();
   render();
-  ui.bindEventListeners();
+  controller.bindEventListeners();
 });
